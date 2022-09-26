@@ -3,28 +3,28 @@ import { Link, graphql } from "gatsby"
 
 import Layout from "../components/layout"
 import Seo from "../components/seo"
+import { Body } from "../components/body";
 
 const DrupalPage = ({data}) => {
   console.log(data)
   return (
     <Layout>
-      <h1>{data.allNodePage.edges[0].node.title}</h1>
-      <p dangerouslySetInnerHTML={{__html: data.allNodePage.edges[0].node.body.value}} />
+      <h1>{data.nodePage.title}</h1>
+      <Body text={data.nodePage.body.value} />
+
       <Link to="/">Go back to the homepage</Link>
     </Layout>
   )
 }
 
 export const query = graphql`
-  query MyDrupalPageQuery {
-    allNodePage {
-      edges {
-        node {
-          body {
-            value
-          }
-          title
-        }
+  query pageQuery($drupal_id: String) {
+    nodePage(drupal_id: {eq: $drupal_id}) {
+      title
+      created
+      status
+      body {
+        value
       }
     }
   }
